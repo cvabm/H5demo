@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh" manifest="demo.appcache">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML5 离线Web应用示例</title>
+</head>
+<body>
+    <h2>离线Web应用示例</h2>
+    <p>尝试断开网络连接并刷新页面。</p>
+    <div id="status"></div>
+
+    <script>
+    window.addEventListener('load', function(e) {
+        window.applicationCache.addEventListener('updateready', function(e) {
+            if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+                window.applicationCache.swapCache();
+                if (confirm('新版本可用。您想要现在加载吗?')) {
+                    window.location.reload();
+                }
+            }
+        }, false);
+    }, false);
+
+    function updateOnlineStatus(msg) {
+        document.getElementById("status").innerHTML = msg;
+    }
+
+    window.addEventListener('online',  function(){updateOnlineStatus("在线")});
+    window.addEventListener('offline', function(){updateOnlineStatus("离线")});
+    </script>
+</body>
+</html>

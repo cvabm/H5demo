@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML5 WebSocket 示例</title>
+</head>
+<body>
+    <h2>WebSocket 示例</h2>
+    <div id="messages"></div>
+    <input type="text" id="messageInput" placeholder="输入消息">
+    <button onclick="sendMessage()">发送消息</button>
+
+    <script>
+    // 注意：这里使用的是一个公共的 WebSocket 服务器，仅用于演示
+    const socket = new WebSocket('ws://124.222.224.186:8800');
+
+    socket.onopen = function(e) {
+        addMessage("连接已建立");
+    };
+
+    socket.onmessage = function(event) {
+        addMessage(`服务器: ${event.data}`);
+    };
+
+    socket.onclose = function(event) {
+        if (event.wasClean) {
+            addMessage(`连接已关闭，代码=${event.code} 原因=${event.reason}`);
+        } else {
+            addMessage('连接被中断');
+        }
+    };
+
+    socket.onerror = function(error) {
+        addMessage(`错误: ${error.message}`);
+    };
+
+    function sendMessage() {
+        const messageInput = document.getElementById('messageInput');
+        const message = messageInput.value;
+        socket.send(message);
+        addMessage(`您: ${message}`);
+        messageInput.value = '';
+    }
+
+    function addMessage(message) {
+        const messagesDiv = document.getElementById('messages');
+        messagesDiv.innerHTML += `<p>${message}</p>`;
+    }
+    </script>
+</body>
+</html>

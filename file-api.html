@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML5 文件API示例</title>
+</head>
+<body>
+    <h2>文件API示例</h2>
+    <input type="file" id="fileInput" multiple>
+    <output id="fileInfo"></output>
+
+    <script>
+    document.getElementById('fileInput').addEventListener('change', function(e) {
+        var files = e.target.files;
+        var output = document.getElementById('fileInfo');
+        output.innerHTML = '';
+
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            output.innerHTML += '<br><strong>' + file.name + '</strong> (' + file.type + ') - ' +
+                                file.size + ' bytes, 最后修改: ' +
+                                file.lastModifiedDate.toLocaleDateString();
+        }
+    }, false);
+    </script>
+</body>
+</html>

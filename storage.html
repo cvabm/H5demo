@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML5 本地存储示例</title>
+</head>
+<body>
+    <input type="text" id="input">
+    <button onclick="save()">保存</button>
+    <button onclick="load()">加载</button>
+
+    <script>
+        function save() {
+            var value = document.getElementById("input").value;
+            localStorage.setItem("savedData", value);
+            alert("数据已保存");
+        }
+
+        function load() {
+            var value = localStorage.getItem("savedData");
+            if (value) {
+                document.getElementById("input").value = value;
+                alert("数据已加载");
+            } else {
+                alert("没有保存的数据");
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML5 Web Worker 示例</title>
+</head>
+<body>
+    <h2>Web Worker 示例</h2>
+    <p>计数: <output id="result"></output></p>
+    <button onclick="startWorker()">开始工作</button> 
+    <button onclick="stopWorker()">停止工作</button>
+
+    <script>
+    var w;
+
+    function startWorker() {
+        if(typeof(Worker) !== "undefined") {
+            if(typeof(w) == "undefined") {
+                var blob = new Blob([
+                    `var i = 0;
+
+                    function timedCount() {
+                        i = i + 1;
+                        postMessage(i);
+                        setTimeout("timedCount()",500);
+                    }
+
+                    timedCount();`
+                ], { type: "text/javascript" });
+
+                w = new Worker(URL.createObjectURL(blob));
+            }
+            w.onmessage = function(event) {
+                document.getElementById("result").innerHTML = event.data;
+            };
+        } else {
+            document.getElementById("result").innerHTML = "抱歉，您的浏览器不支持 Web Workers。";
+        }
+    }
+
+    function stopWorker() { 
+        w.terminate();
+        w = undefined;
+    }
+    </script>
+</body>
+</html>
